@@ -1,0 +1,29 @@
+functionality where user can vote to candidates
+
+functionality:
+1.user sign up/signin
+2.see list of candidates
+3.vote to one of the candidates, can vote once only
+4.track vote counts 
+5.user should contain one unique id proof
+6.one admin should maintain the list of candidates and he cannot vote
+7.users can change their password
+
+routes:
+
+1. user authentication:
+   /signup using post - for new user
+   /login using post  - for existing user
+
+2. voting:
+   /candidates- get - to view list of candidates
+   /vote/candidateID - post - vote for a specific candidate
+
+3. user profile:
+   /profile - get - to view the user's info
+   /profile/password - put - change the user's password
+
+4. admin:
+   /candidate - post - to create a new candidate
+   /candidate/candidateID - put - update a existing candidate
+   /candidate/candidateID - delete - delete a candidate from the voting list
