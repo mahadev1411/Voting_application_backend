@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Candidate = require('./models/candidates');
-const User = require('./models/user'); // Import the correct model
+const User = require('./models/user');
 const { authMiddleware } = require('./jwt');
 
 const checkAdmin = async (userID) => {
