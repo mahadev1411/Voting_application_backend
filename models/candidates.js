@@ -13,5 +13,5 @@ const candidateSchema = new mongoose.Schema({
     voteCount: { type: Number, default: 0 }
 });
 
-const Candidate = mongoose.model('Candidate', candidateSchema); // Model name corrected
+const Candidate = mongoose.model('Candidate', candidateSchema);
 module.exports = Candidate;
