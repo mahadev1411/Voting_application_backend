@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 
 // Load environment variables
 dotenv.config();
-const mongoURL="mongodb://localhost:27017/"
+const mongoURL="mongodb://localhost:27017/voting"
 
 mongoose.connect(mongoURL)
 

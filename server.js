@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 // Load environment variables
 dotenv.config();
 
-//const geminiRoutes = require("./gemini"); // Import gemini routes
 const userRoutes = require("./userRoutes"); // Ensure correct path
 const candidateRoutes = require("./candidateRoute"); // Ensure correct path
 const db = require('./db')
