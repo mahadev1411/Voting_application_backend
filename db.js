@@ -5,7 +5,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 const mongoURL=process.env.Mongo_URL;
 
-mongoose.connect(mongoURL)
+mongoose.connect(mongoURL, {
+    tls: true
+})
+
 
 const db=mongoose.connection;
 
