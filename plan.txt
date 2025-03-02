@@ -9,21 +9,22 @@ functionality:
 6.one admin should maintain the list of candidates and he cannot vote
 7.users can change their password
 
-routes:
+endpoints:
 
 1. user authentication:
-   /signup using post - for new user
-   /login using post  - for existing user
+   /user/signup - post - for new user (an email is sent to new registered email-id)
+   /user/login - post  - for existing user
 
 2. voting:
-   /candidates- get - to view list of candidates
-   /vote/candidateID - post - vote for a specific candidate
+   /candidate - get - to view list of candidates
+   /candidate/vote/candidateID - post - vote for a specific candidate (confirmation email is sent to the email after voting successfully)
+   /candidate/result - get - to view the winner/winners of the election 
 
-3. user profile:
-   /profile - get - to view the user's info
-   /profile/password - put - change the user's password
+3. user profile (Protected routes):
+   /user/profile - get - to view the user's info
+   /user/profile/password - put - change the user's password
 
 4. admin:
-   /candidate - post - to create a new candidate
+   /candidate/signup - post - to create a new candidate
    /candidate/candidateID - put - update a existing candidate
    /candidate/candidateID - delete - delete a candidate from the voting list
