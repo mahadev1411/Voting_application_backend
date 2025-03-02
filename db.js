@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 
 // Load environment variables
 dotenv.config();
-const mongoURL=process.env.mongo_URL;
+const mongoURL=process.env.Mongo_URL;
 
 mongoose.connect(mongoURL)
 
