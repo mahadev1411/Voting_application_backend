@@ -7,9 +7,7 @@ const mongoURL=process.env.Mongo_URL;
 
 mongoose.connect(mongoURL, {
     ssl: true, // Use SSL/TLS
-    tlsAllowInvalidCertificates: true, // Allow invalid TLS certs
-    serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
-    socketTimeoutMS: 45000 // 45s socket timeout
+    tlsAllowInvalidCertificates: true // Allow invalid TLS certs
 })
 
 
