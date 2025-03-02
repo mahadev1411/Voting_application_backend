@@ -14,4 +14,6 @@ Database Storage: Votes and user data are stored in MongoDB with proper validati
 
 Email confirmations are sent using node-mailer package during the signup and casting of vote.
 
+Rate Limiting feature makes sure that too many requests are not sent to the server within the set amount of time which prevents DOS attacks.
+
 "Refer to **plan.txt** file for the entire overview of the project and endpoints defined for each role"
