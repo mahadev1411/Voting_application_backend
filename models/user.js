@@ -10,9 +10,7 @@ const userSchema = new mongoose.Schema({
     aadhar: { type: Number, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['voter', 'admin'], default: 'voter' },
-    isVoted: { type: Boolean, default: false },
-    otp: String,
-    otpExpires: Date
+    isVoted: { type: Boolean, default: false }
 });
 
 userSchema.pre('save', async function (next) {
