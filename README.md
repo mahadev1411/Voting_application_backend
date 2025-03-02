@@ -11,3 +11,7 @@ Results Viewing: Real-time vote counting and results retrieval.
 Role-Based Access: Admins can manage candidates and view complete vote statistics.
 
 Database Storage: Votes and user data are stored in MongoDB with proper validation.
+
+Email confirmations are sent using node-mailer package during the signup and casting of vote.
+
+"Refer to **plan.txt** file for the entire overview of the project and endpoints defined for each role"
