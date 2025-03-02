@@ -4,36 +4,44 @@ const User = require('./models/user'); // Import the User model
 //const db=require('./db');
 const { authMiddleware, generateToken } = require('./jwt'); // Correct import
 const bcrypt=require('bcrypt')
-
+const sendEmail=require('./emailService')
+const {loginLimiterLimiter, loginLimiter}=require('./rate-limit')
 
 // Sign-up route
-router.post('/signup', async (req, res) => {
+router.post("/signup", async (req, res) => {
     try {
         const data = req.body;
-        if(data.age>=18)
-        {
+        if (data.age >= 18) {
             const newUser = new User(data);
             const savedUser = await newUser.save();
 
             console.log("User data saved");
 
+            // Send Email Notification
+            await sendEmail(
+                data.email,
+                "Welcome to the Voting Application",
+                `Dear ${data.name},<br><br>
+                You have successfully registered for the voting system.<br>
+                You can now participate in elections.<br><br>
+                Best Regards,<br>Voting System Team`
+            );
+
             res.status(200).json({ 
-                message: "Welcome to the voting application", 
+                message: "Welcome to the voting application. Email sent!", 
                 savedUser 
             });
+        } else {
+            res.status(400).json({ message: "You should be above 18 years to register!!" });
         }
-        else
-        {
-            res.status(400).json({message:"You should be above 18 years to register!!"})
-        }        
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'User already exists!! Please login' });
+        res.status(500).json({ error: "User already exists!! Please login" });
     }
 });
 
 // Login route
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter ,async (req, res) => {
     try {
         const { aadhar, password } = req.body;
 
@@ -47,7 +55,7 @@ router.post('/login', async (req, res) => {
         }
 
         const token = generateToken({ id: user.id });
-        res.json({ message:"Hey!! Welcome",token });
+        res.json({ message:`Hey ${user.name} !! Welcome Back`,token });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });

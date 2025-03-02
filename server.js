@@ -14,8 +14,6 @@ const PORT = process.env.PORT;
 // Middleware to parse JSON payloads
 app.use(express.json());
 
-// Define routes
-//app.use("/ai", geminiRoutes);
 app.use("/user", userRoutes);
 app.use("/candidate", candidateRoutes);
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const Candidate = require('./models/candidates');
 const User = require('./models/user');
 const { authMiddleware } = require('./jwt');
+const sendEmail=require('./emailService')
 
 const checkAdmin = async (userID) => {
     try {
@@ -107,6 +108,22 @@ router.post('/vote/:candidateID', authMiddleware, async (req, res) => {
 
         user.isVoted = true;
         await user.save();
+
+        // Send Email Notification
+        await sendEmail(
+            user.email,
+            "Your Vote Has Been Successfully Cast! ✅",
+            `Dear ${user.name},<br><br>
+
+            We are pleased to inform you that your vote has been successfully recorded in the Voting System. 🗳️ <br><br>
+            Thank you for participating in the election and making your voice count! Your vote plays a crucial role in shaping the future, and we truly appreciate your engagement in the democratic process. <br><br>
+            If you did not cast this vote or suspect any unauthorized activity, please 
+            <a href="mailto:support@votingsystem.com">contact our support team</a> immediately. <br><br>
+            For any queries or assistance, feel free to reach out to our support team. <br><br>
+            Best Regards, <br>
+            <strong>The Voting System Team</strong>`
+        );
+
 
         return res.status(200).json({ message: 'You voted successfully' });
     } catch (err) {
