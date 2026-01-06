@@ -152,7 +152,7 @@ router.get('/', async (req, res) => {
 });
 
 // View election results
-router.get('/result', async (req, res) => {
+router.get('/result',authMiddleware, async (req, res) => {
     try {
         const candidates = await Candidate.find();
 

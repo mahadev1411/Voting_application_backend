@@ -1,23 +1,26 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 // Load environment variables
 dotenv.config();
 
-const userRoutes = require("./userRoutes"); // Ensure correct path
-const candidateRoutes = require("./candidateRoute"); // Ensure correct path
-const db = require('./db')
+const userRoutes = require("./userRoutes");
+const candidateRoutes = require("./candidateRoute");
+require("./db"); // just require, no need to store in variable
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON payloads
-app.use(express.json());
+// Middleware
+app.use(cors());          // ✅ AFTER app is created
+app.use(express.json()); // parse JSON
 
+// Routes
 app.use("/user", userRoutes);
 app.use("/candidate", candidateRoutes);
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

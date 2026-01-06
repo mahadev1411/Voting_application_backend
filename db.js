@@ -1,29 +1,17 @@
-const mongoose=require('mongoose');
-const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
-// Load environment variables
-dotenv.config();
-const mongoURL=process.env.Mongo_URL;
+const mongoURL = process.env.Mongo_URL;
 
-mongoose.connect(mongoURL, {
-    ssl: true, // Use SSL/TLS
-    tlsAllowInvalidCertificates: true // Allow invalid TLS certs
-})
+mongoose
+  .connect(mongoURL, {
+    serverSelectionTimeoutMS: 5000,
+    family: 4, // force IPv4
+  })
+  .then(() => console.log("connected to database"))
+  .catch((err) => console.log("database connection error:", err));
 
+mongoose.connection.on("disconnected", () => {
+  console.log("disconnected from database");
+});
 
-
-const db=mongoose.connection;
-
-db.on('connected',()=>{
-    console.log("connected to database");
-})
-
-db.on('disconnected',()=>{
-    console.log("disconnected from database");
-})
-
-db.on('error',()=>{
-    console.log("database connection error");
-})
-
-module.exports=db;
+module.exports = mongoose.connection;

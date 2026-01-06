@@ -9,35 +9,46 @@ const {loginLimiterLimiter, loginLimiter}=require('./rate-limit')
 
 // Sign-up route
 router.post("/signup", async (req, res) => {
-    try {
-        const data = req.body;
-        if (data.age >= 18) {
-            const newUser = new User(data);
-            const savedUser = await newUser.save();
+  try {
+    const data = req.body;
 
-            console.log("User data saved");
-
-            // Send Email Notification
-            await sendEmail(
-                data.email,
-                "Welcome to the Voting Application",
-                `Dear ${data.name},<br><br>
-                You have successfully registered for the voting system.<br>
-                You can now participate in elections.<br><br>
-                Best Regards,<br>Voting System Team`
-            );
-
-            res.status(200).json({ 
-                message: "Welcome to the voting application. Email sent!", 
-                savedUser 
-            });
-        } else {
-            res.status(400).json({ message: "You should be above 18 years to register!!" });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "User already exists!! Please login" });
+    // age check
+    if (data.age < 18) {
+      return res.status(400).json({ message: "You should be above 18 years to register!!" });
     }
+
+    // role handling (safe)
+    let role = "voter";
+    if (data.role === "admin") {
+      if (!data.adminKey || data.adminKey !== process.env.ADMIN_SIGNUP_KEY) {
+        return res.status(403).json({ message: "Invalid admin signup key" });
+      }
+      role = "admin";
+    }
+
+    // ✅ don't store adminKey in DB
+    const { adminKey, ...userData } = data;
+
+    const newUser = new User({ ...userData, role });
+    const savedUser = await newUser.save();
+
+    await sendEmail(
+      userData.email,
+      "Welcome to the Voting Application",
+      `Dear ${userData.name},<br><br>
+      You have successfully registered for the voting system.<br>
+      You can now participate in elections.<br><br>
+      Best Regards,<br>Voting System Team`
+    );
+
+    return res.status(200).json({
+      message: "Welcome to the voting application. Email sent!",
+      savedUser,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "User already exists!! Please login" });
+  }
 });
 
 // Login route
